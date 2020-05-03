@@ -56,6 +56,25 @@ const posts = [
   },
 ];
 
+const comments = [
+  {
+    id: "1",
+    text: "This is a commmer about post 1",
+  },
+  {
+    id: "2",
+    text: "This is a commmer about post 2",
+  },
+  {
+    id: "3",
+    text: "This is a commmer about post 3",
+  },
+  {
+    id: "2",
+    text: "This is a commmer about post 2 as well",
+  },
+];
+
 // Type definitions (schema)
 const typeDefs = `
   type Query {
@@ -63,6 +82,7 @@ const typeDefs = `
     posts(query: String): [Post!]!
     me: User!
     post: Post!
+    comment: [Comment!]!
   }
 
   type User {
@@ -80,6 +100,11 @@ const typeDefs = `
     published: Boolean!
     author: User!
   }
+
+  type Comment {
+    id: ID!
+    text: String!
+  }
 `;
 
 // Resolvers
@@ -91,9 +116,13 @@ const resolvers = {
       }
 
       return posts.filter((item) => {
-        const titleMatch = item.title.toLowerCase().includes(args.query.toLowerCase());
-        const bodyMatch = item.body.toLowerCase().includes(args.query.toLowerCase());
-        return titleMatch || bodyMatch
+        const titleMatch = item.title
+          .toLowerCase()
+          .includes(args.query.toLowerCase());
+        const bodyMatch = item.body
+          .toLowerCase()
+          .includes(args.query.toLowerCase());
+        return titleMatch || bodyMatch;
       });
     },
     users(parent, args, ctx, info) {
@@ -121,21 +150,24 @@ const resolvers = {
         published: true,
       };
     },
+    comment() {
+      return comments;
+    },
   },
   Post: {
     author(parent, args, ctx, info) {
-      return users.find(user => {
+      return users.find((user) => {
         return user.id === parent.author;
       });
-    }
+    },
   },
   User: {
     posts(parent, args, ctx, info) {
       return posts.filter((post) => {
-        return post.author === parent.id
-      })
-    }
-  }
+        return post.author === parent.id;
+      });
+    },
+  },
 };
 
 const server = new GraphQLServer({
