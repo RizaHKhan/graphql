@@ -1,17 +1,40 @@
 import { GraphQLServer } from "graphql-yoga";
 
+// Scalar Types:
+// String
+// Boolean
+// Int (whole numbers)
+// Float (numbers w/ decimal points)
+// ID
+
 // Type definitions (schema)
 const typeDefs = `
   type Query {
-    hello: String!
+    id: ID!
+    name: String!
+    age: Int!
+    employed: Boolean!
+    gpa: Float!
   }
 `;
 
 // Resolvers
 const resolvers = {
   Query: {
-    hello() {
-      return "This is my first query";
+    id() {
+      return "abc123";
+    },
+    name() {
+      return "khanr";
+    },
+    age() {
+      return 34;
+    },
+    employed() {
+      return true;
+    },
+    gpa() {
+      return 2.0;
     },
   },
 };
@@ -22,5 +45,5 @@ const server = new GraphQLServer({
 });
 
 server.start(() => {
-  console.log('The server is up on localhost 4000')
+  console.log("The server is up on localhost 4000");
 });
