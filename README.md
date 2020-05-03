@@ -36,3 +36,7 @@ Sending arrays to the server
 
 ### Lecture 17:
 Passing a argument to the users array and applying a search filter
+
+### Lecture 18:
+Setting up relationships between data.
+If we add a custom data type, we must tell graphql how to get that information

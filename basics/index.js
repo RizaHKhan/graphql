@@ -36,6 +36,7 @@ const posts = [
     body:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur delectus cum commodi dignissimos voluptate dolorem porro sed deserunt debitis praesentium!",
     published: true,
+    author: "1",
   },
   {
     id: "2",
@@ -43,6 +44,7 @@ const posts = [
     body:
       "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iusto totam ab similique voluptate hic voluptatibus quia consequuntur sequi delectus pariatur.",
     published: false,
+    author: "2",
   },
   {
     id: "3",
@@ -50,6 +52,7 @@ const posts = [
     body:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta labore consequatur voluptates saepe tempore. Perferendis labore dolorem sapiente aperiam ad?",
     published: false,
+    author: "3",
   },
 ];
 
@@ -74,6 +77,7 @@ const typeDefs = `
     title: String!
     body: String!
     published: Boolean!
+    author: User!
   }
 `;
 
@@ -117,6 +121,13 @@ const resolvers = {
       };
     },
   },
+  Post: {
+    author(parent, args, ctx, info) {
+      return users.find(user => {
+        return user.id === parent.author;
+      });
+    }
+  }
 };
 
 const server = new GraphQLServer({
