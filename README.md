@@ -33,3 +33,6 @@ A query resolver has 4 arguments, and the `args` object receives all of the quer
 
 ### Lecture 16:
 Sending arrays to the server
+
+### Lecture 17:
+Passing a argument to the users array and applying a search filter

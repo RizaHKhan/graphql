@@ -7,10 +7,57 @@ import { GraphQLServer } from "graphql-yoga";
 // Float (numbers w/ decimal points)
 // ID
 
+// Demo User Data
+const users = [
+  {
+    id: "1",
+    name: "khanr",
+    email: "email@example.com",
+    age: 34,
+  },
+  {
+    id: "2",
+    name: "sarah",
+    email: "sarah@example.com",
+    age: 18,
+  },
+  {
+    id: "3",
+    name: "liz",
+    email: "liz@example.com",
+    age: 50,
+  },
+];
+
+const posts = [
+  {
+    id: "1",
+    title: "Post 1",
+    body:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur delectus cum commodi dignissimos voluptate dolorem porro sed deserunt debitis praesentium!",
+    published: true,
+  },
+  {
+    id: "2",
+    title: "Post 2",
+    body:
+      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iusto totam ab similique voluptate hic voluptatibus quia consequuntur sequi delectus pariatur.",
+    published: false,
+  },
+  {
+    id: "3",
+    title: "Post 3",
+    body:
+      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta labore consequatur voluptates saepe tempore. Perferendis labore dolorem sapiente aperiam ad?",
+    published: false,
+  },
+];
+
 // Type definitions (schema)
 const typeDefs = `
   type Query {
-    users: [User!]!
+    users(query: String): [User!]!
+    posts(query: String): [Post!]!
     me: User!
     post: Post!
   }
@@ -33,6 +80,26 @@ const typeDefs = `
 // Resolvers
 const resolvers = {
   Query: {
+    posts(parent, args, ctx, info) {
+      if (!args.query) {
+        return posts;
+      }
+
+      return posts.filter((item) => {
+        const titleMatch = item.title.toLowerCase().includes(args.query.toLowerCase());
+        const bodyMatch = item.body.toLowerCase().includes(args.query.toLowerCase());
+        return titleMatch || bodyMatch
+      });
+    },
+    users(parent, args, ctx, info) {
+      if (!args.query) {
+        return users;
+      }
+
+      return users.filter((user) => {
+        return user.name.toLowerCase().includes(args.query.toLowerCase());
+      });
+    },
     me() {
       return {
         id: "123456",
