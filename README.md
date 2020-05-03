@@ -44,3 +44,9 @@ Setup relationship between User and Posts
 
 ### Lecture 19:
 Established a relationship both ways
+
+### Lecture 20:
+Created Comments query and example array
+
+### Lecture 21:
+Relationship between comment and user
