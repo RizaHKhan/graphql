@@ -10,3 +10,7 @@ Setup a GraphQL server and query
 
 Lecture 12:
 Reviewing the five scalar values GraphQL accepts
+
+Lecture 13:
+Automatic server restarts using nodemon
+Adjusted package.json accordingly
