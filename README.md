@@ -27,6 +27,9 @@ query {
   }
 }
 ```
-### Lecture 14:
+### Lecture 15:
 A query can receive an argument(s)
 A query resolver has 4 arguments, and the `args` object receives all of the query arguments
+
+### Lecture 16:
+Sending arrays to the server
