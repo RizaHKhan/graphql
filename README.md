@@ -50,3 +50,6 @@ Created Comments query and example array
 
 ### Lecture 21:
 Relationship between comment and user
+
+### Lecture 23:
+Relationship between comments and posts

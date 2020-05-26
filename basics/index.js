@@ -1,5 +1,5 @@
 import { GraphQLServer } from "graphql-yoga";
-
+import { v4 as uuidv4 } from "uuid";
 // Scalar Types:
 // String
 // Boolean
@@ -37,7 +37,7 @@ const posts = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur delectus cum commodi dignissimos voluptate dolorem porro sed deserunt debitis praesentium!",
     published: true,
     author: "1",
-    comments: '1'
+    comments: "1",
   },
   {
     id: "2",
@@ -94,6 +94,10 @@ const typeDefs = `
     me: User!
     post: Post!
     comment: [Comment!]!
+  }
+
+  type Mutation {
+    createUser(name: String!, email: String!, age: Int): User!
   }
 
   type User {
@@ -169,6 +173,26 @@ const resolvers = {
       return comments;
     },
   },
+  Mutation: {
+    createUser(parent, args, ctx, info) {
+      const emailTaken = users.some((user) => user.email === args.email);
+      if (emailTaken) {
+        throw new Error("Email already exists in database");
+      }
+
+      const user = {
+        id: uuidv4(),
+        name: args.name,
+        email: args.email,
+        age: args.age,
+      };
+
+      users.push(user);
+
+      return user;
+      console.log(args);
+    },
+  },
   Post: {
     author(parent, args, ctx, info) {
       return users.find((user) => {
@@ -177,10 +201,10 @@ const resolvers = {
     },
     comments(parent, args, ctx, info) {
       return comments.filter((comment) => {
-        console.log(comment.post)
-        return comment.post === parent.id
-      })
-    }
+        console.log(comment.post);
+        return comment.post === parent.id;
+      });
+    },
   },
   User: {
     posts(parent, args, ctx, info) {
@@ -190,22 +214,22 @@ const resolvers = {
     },
     comments(parent, args, ctx, info) {
       return comments.filter((comment) => {
-        return comment.post === parent.id
-      })
-    }
+        return comment.post === parent.id;
+      });
+    },
   },
   Comment: {
     author(parent, args, ctx, info) {
-      return users.find(user => {
-        return user.id === parent.author
+      return users.find((user) => {
+        return user.id === parent.author;
       });
     },
     post(parent, args, ctx, info) {
       return posts.find((post) => {
-        return post.id === parent.post
-      })
-    }
-  }
+        return post.id === parent.post;
+      });
+    },
+  },
 };
 
 const server = new GraphQLServer({
